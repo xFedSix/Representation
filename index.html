@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+	<title>reveal.js</title>
+
+	<link rel="stylesheet" href="dist/reset.css" />
+	<link rel="stylesheet" href="dist/reveal.css" />
+	<link rel="stylesheet" href="dist/theme/league.css" />
+	<link rel="stylesheet" href="plugin/highlight/monokai.css" />
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				<h1>SOLID Principles</h1>
+				<p>
+					A guide to writing maintainable, flexible, and scalable software
+				</p>
+			</section>
+			<section>
+				<section>
+					<h2>S - Single Responsibility Principle</h2>
+					<p>A class should have one, and only one, reason to change.</p>
+				</section>
+				<section>
+					<h3>Example of SRP</h3>
+					<p>
+						Consider a class <code>UserManager</code> that has methods for user
+						management tasks such as adding or removing users, and also methods
+						for user notifications like sending emails. This class violates SRP
+						because it has more than one reason to change: changes to user
+						management logic or changes to how notifications are handled.
+					</p>
+				</section>
+				<section>
+					<pre>
+						<code class="language-js">
+							class UserManager {
+								addUser(user) { /* ... */ }
+								removeUser(user) { /* ... */ }
+								sendEmail(user, message) { /* ... */ }
+							}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<h3>SRP-Compliant Solution</h3>
+					<p>
+						To adhere to SRP, we can split <code>UserManager</code> into two
+						classes: one for user management and another for user notifications.
+					</p>
+				</section>
+				<section>
+					<pre>
+						<code class="language-js">
+							class UserManager {
+								addUser(user) { /* ... */ }
+								removeUser(user) { /* ... */ }
+							}
+							class UserNotifier {
+								sendEmail(user, message) { /* ... */ }
+							}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<h3>Conclusion on SRP</h3>
+					<p>
+						By following the Single Responsibility Principle, we ensure that
+						each class in our system has a single responsibility and thus only
+						one reason to change. This makes our system more robust, easier to
+						maintain, and enhances its ability to adapt to future requirements.
+					</p>
+				</section>
+			</section>
+			</section>
+
+			<section>
+				<section>
+					<h2>O - Open/Closed Principle</h2>
+					<p>
+						Objects or entities should be open for extension but closed for
+						modification.
+					</p>
+				</section>
+				<section>
+					<h3>What is the Open/Closed Principle?</h3>
+					<p>
+						The Open/Closed Principle is a fundamental concept in
+						object-oriented design that suggests software entities (classes,
+						modules, functions, etc.) should be open for extension but closed
+						for modification. This means you should be able to add new
+						functionality without changing the existing code.
+					</p>
+				</section>
+				<section>
+					<h3>Why is OCP Important?</h3>
+					<p>
+						Following the Open/Closed Principle helps in reducing the risk of
+						breaking existing functionality when making changes or adding new
+						features. It encourages a more modular design, promotes reusability,
+						and leads to more maintainable and scalable code.
+					</p>
+				</section>
+				<section>
+					<h3>Example Violating OCP</h3>
+					<p>
+						Imagine a class <code>ReportGenerator</code> that generates reports
+						in a specific format (e.g., PDF). If you need to support new formats
+						(e.g., HTML), you have to modify the
+						<code>ReportGenerator</code> class. This approach violates OCP.
+					</p>
+				</section>
+				<section>
+					<pre>
+						<code class="language-js">
+							class ReportGenerator {
+								generateReport(data) {
+								// Generate a PDF report
+								}
+							}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<h3>OCP-Compliant Solution</h3>
+					<p>
+						To comply with OCP, you can define a common interface for report
+						generation and implement it for each report format. This way,
+						supporting new formats doesn't require changing the existing code,
+						only extending it.
+					</p>
+				</section>
+				<section>
+					<pre>
+						<code class="language-js" style="min-height: 500px;">
+							interface ReportGenerator {
+								generateReport(data);
+							}
+							class PdfReportGenerator implements ReportGenerator {
+								generateReport(data) {
+									// Generate a PDF report
+								}
+							}
+							class HtmlReportGenerator implements ReportGenerator {
+								generateReport(data) {
+									// Generate an HTML report
+								}
+							}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<h3>Applying OCP in Practice</h3>
+					<p>
+						To effectively apply the Open/Closed Principle, focus on identifying
+						aspects of your application that are most likely to change. Abstract
+						these aspects behind stable interfaces, and implement functionality
+						as extensions of these interfaces.
+					</p>
+				</section>
+				<section>
+					<h3>Conclusion on OCP</h3>
+					<p>
+						By adhering to the Open/Closed Principle, developers can create
+						systems that are more flexible and easier to update or extend over
+						time. This principle is crucial for achieving a scalable and
+						maintainable codebase that can adapt to new requirements without
+						compromising existing functionality.
+					</p>
+				</section>
+			</section>
+
+			<section>
+				<section>
+					<h2>L - Liskov Substitution Principle</h2>
+					<p>
+						Objects in a program should be replaceable with instances of their
+						subtypes without altering the correctness of the program.
+					</p>
+				</section>
+				<section>
+					<h3>What is the Liskov Substitution Principle?</h3>
+					<p>
+						The Liskov Substitution Principle (LSP) is a concept in
+						object-oriented programming that states if S is a subtype of T, then
+						objects of type T in a program may be replaced with objects of type
+						S without altering any of the desirable properties of that program
+						(correctness, task performed, etc.).
+					</p>
+				</section>
+				<section>
+					<h3>Why is LSP Important?</h3>
+					<p>
+						LSP is crucial for the maintainability and reusability of code. It
+						ensures that a subclass can stand in for its superclass without
+						errors. If a subclass cannot be used in place of its superclass,
+						then the design violates LSP and is likely to be error-prone and
+						difficult to maintain.
+					</p>
+				</section>
+				<section>
+					<h3>Example Violating LSP</h3>
+					<p>
+						Consider a class <code>Rectangle</code> with methods
+						<code>setWidth</code> and <code>setHeight</code>. A subclass
+						<code>Square</code> overrides these methods because for a square,
+						width and height are always equal. This violates LSP because a
+						<code>Square</code> cannot be used as a
+						<code>Rectangle</code> without altering the behavior of
+						<code>Rectangle</code>.
+					</p>
+				</section>
+				<section>
+					<pre>
+						<code class="language-js" style="min-height: 500px;">
+							class Rectangle {
+								setWidth(width) { /* ... */ }
+								setHeight(height) { /* ... */ }
+							}
+							class Square extends Rectangle {
+								setWidth(width) {
+									super.setWidth(width);
+									super.setHeight(width);
+								}
+								setHeight(height) {
+									super.setWidth(height);
+									super.setHeight(height);
+								}
+							}
+				</code></pre>
+				</section>
+				<section>
+					<h3>LSP-Compliant Solution</h3>
+					<p>
+						To comply with LSP, instead of inheriting <code>Square</code> from
+						<code>Rectangle</code>, both can implement a more general interface
+						or have a more abstract parent class that does not assume the
+						relationship between width and height.
+					</p>
+				</section>
+				<section>
+					<pre>
+						<code class="language-js" style="min-height: 500px;">
+							interface Shape {
+								setWidth(width);
+								setHeight(height);
+							}
+							class Rectangle implements Shape {
+								setWidth(width) { /* ... */ }
+								setHeight(height) { /* ... */ }
+							}
+							class Square implements Shape {
+								setSize(size) {
+									// Set both width and height to size
+								}
+							}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<h3>Applying LSP in Practice</h3>
+					<p>
+						When designing your classes and their relationships, ensure that any
+						subclass can replace its superclass without affecting the program's
+						execution. This might involve rethinking inheritance hierarchies and
+						favoring composition over inheritance where necessary.
+					</p>
+				</section>
+				<section>
+					<h3>Conclusion on LSP</h3>
+					<p>
+						Adhering to the Liskov Substitution Principle is essential for
+						creating flexible and maintainable object-oriented systems. It
+						encourages a design where subclasses can be used interchangeably
+						with their superclasses, leading to more robust and reliable code.
+					</p>
+				</section>
+			</section>
+
+			<section>
+				<section>
+					<h2>I - Interface Segregation Principle</h2>
+					<p>
+						No client should be forced to depend on methods it does not use.
+					</p>
+				</section>
+				<section>
+					<h3>What is the Interface Segregation Principle?</h3>
+					<p>
+						The Interface Segregation Principle (ISP) is a design principle in
+						object-oriented programming that states clients should not be forced
+						to depend upon interfaces they do not use. This principle aims to
+						reduce the side effects and frequency of required changes by
+						splitting large interfaces into smaller and more specific ones so
+						that clients only need to know about the methods that are of
+						interest to them.
+					</p>
+				</section>
+				<section>
+					<h3>Why is ISP Important?</h3>
+					<p>
+						ISP helps in making the system more modular, easier to understand
+						and maintain. It reduces the impact of changes, as changes to one
+						part of the system will not affect those parts that don't depend on
+						it. This principle also promotes a more decoupled system where
+						components can be developed, tested, and updated more independently.
+					</p>
+				</section>
+				<section>
+					<h3>Example Violating ISP</h3>
+					<p>
+						Imagine an interface <code>Workable</code> that has methods for
+						different types of work, such as <code>work</code>,
+						<code>eat</code>, and <code>sleep</code>. A class
+						<code>Human</code> might implement all these methods, but a class
+						<code>Robot</code> would only implement <code>work</code>, making
+						the <code>Robot</code> class dependent on methods it does not use.
+					</p>
+				</section>
+				<section>
+					<pre><code class="language-js" style="min-height: 500px;">
+							interface Workable {
+								work();
+								eat();
+								sleep();
+							}
+							class Human implements Workable {
+								work() { /* ... */ }
+								eat() { /* ... */ }
+								sleep() { /* ... */ }
+							}
+							class Robot implements Workable {
+								work() { /* ... */ }
+								eat() { // Not applicable }
+								sleep() { // Not applicable }
+							}
+						</code></pre>
+				</section>
+				<section>
+					<h3>ISP-Compliant Solution</h3>
+					<p>
+						To adhere to ISP, we can split the <code>Workable</code> interface
+						into smaller interfaces, such as <code>Workable</code>,
+						<code>Eatable</code>, and <code>Sleepable</code>. This way,
+						<code>Human</code> can implement all three interfaces, while
+						<code>Robot</code> only implements <code>Workable</code>.
+					</p>
+				</section>
+				<section>
+					<section>
+						<pre><code class="language-js" style="min-height: 500px;">
+							interface Workable {
+								work();
+							}
+							interface Eatable {
+								eat();
+							}
+							interface Sleepable {
+								sleep();
+							}
+							class Human implements Workable, Eatable, Sleepable {
+								work() { /* ... */ }
+								eat() { /* ... */ }
+								sleep() { /* ... */ }
+							}
+							class Robot implements Workable {
+								work() { /* ... */ }
+							}
+						</code>
+						</pre>
+					</section>
+				</section>
+				<section>
+					<h3>Applying ISP in Practice</h3>
+					<p>
+						When designing interfaces, consider the clients that will use them.
+						Aim for lean interfaces that are client-specific rather than
+						general-purpose. This approach minimizes the impact of changes and
+						makes your code more adaptable and easier to refactor.
+					</p>
+				</section>
+				<section>
+					<h3>Conclusion on ISP</h3>
+					<p>
+						By following the Interface Segregation Principle, developers can
+						create systems that are more flexible, maintainable, and
+						understandable. It encourages designing interfaces that are specific
+						to the client's needs, thereby reducing unnecessary dependencies and
+						making the system more robust against changes.
+					</p>
+				</section>
+			</section>
+
+			</section>
+
+			<section>
+				<section>
+					<h2>D - Dependency Inversion Principle</h2>
+					<p>
+						High-level modules should not depend on low-level modules. Both
+						should depend on abstractions.
+					</p>
+				</section>
+				<section>
+					<h3>What is the Dependency Inversion Principle?</h3>
+					<p>
+						The Dependency Inversion Principle (DIP) is a fundamental principle
+						in object-oriented design that suggests high-level modules should
+						not depend on low-level modules, but both should depend on
+						abstractions. Additionally, abstractions should not depend on
+						details, but details should depend on abstractions. This principle
+						aims to decouple software modules, making them more reusable and
+						maintainable.
+					</p>
+				</section>
+				<section>
+					<h3>Why is DIP Important?</h3>
+					<p>
+						DIP is crucial for reducing the coupling between code modules,
+						making a system easier to refactor, test, and maintain. By depending
+						on abstractions rather than concrete implementations, software
+						components become more flexible and adaptable to change. This
+						principle is key to achieving a scalable and robust architecture.
+					</p>
+				</section>
+				<section>
+					<h3>Example Violating DIP</h3>
+					<p>
+						Consider a high-level module <code>OrderProcessor</code> that
+						directly depends on a low-level module <code>EmailService</code> to
+						send confirmation emails. This direct dependency makes it hard to
+						change or test <code>OrderProcessor</code> without also involving
+						<code>EmailService</code>.
+					</p>
+				</section>
+				<section>
+					<pre>
+						<code class="language-js" style="min-height: 500px;">
+							class EmailService {
+								sendEmail(orderId, email) {
+									// Send email logic
+								}
+							}
+							class OrderProcessor {
+								constructor() {
+									this.emailService = new EmailService();
+							}
+								processOrder(orderId, email) {
+									// Order processing logic
+									this.emailService.sendEmail(orderId, email);
+								}
+							}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<h3>DIP-Compliant Solution</h3>
+					<p>
+						To adhere to DIP, introduce an abstraction (e.g., an interface or an
+						abstract class) for <code>EmailService</code> and depend on this
+						abstraction in <code>OrderProcessor</code>. This way,
+						<code>OrderProcessor</code> is decoupled from the concrete
+						implementation of email sending, making it more flexible and easier
+						to test.
+					</p>
+				</section>
+				<section>
+						<pre>
+							<code class="language-js" style="min-height: 500px;">
+								interface IEmailService {
+									sendEmail(orderId, email);
+								}
+								class EmailService implements IEmailService {
+									sendEmail(orderId, email) {
+										// Send email logic
+									}
+								}
+								class OrderProcessor {
+									constructor(emailService: IEmailService) {
+										this.emailService = emailService;
+									}
+									processOrder(orderId, email) {
+										// Order processing logic
+										this.emailService.sendEmail(orderId, email);
+									}
+								}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<h3>Applying DIP in Practice</h3>
+					<p>
+						When designing your system, always aim to depend on abstractions
+						rather than concrete classes. Use dependency injection to provide
+						the concrete implementations at runtime. This approach not only
+						makes your code more modular and testable but also aligns with the
+						principles of clean architecture.
+					</p>
+				</section>
+				<section>
+					<h3>Conclusion on DIP</h3>
+					<p>
+						Following the Dependency Inversion Principle helps in creating a
+						system that is decoupled, flexible, and easy to maintain. It
+						encourages the development of a system where high-level modules are
+						insulated from the changes in low-level modules, leading to a more
+						robust and adaptable codebase.
+					</p>
+				</section>
+			</section>
+			<section>
+				<section>
+					<h2>Summary of SOLID Principles</h2>
+					<p>The SOLID principles guide developers towards more maintainable, flexible, and scalable software
+					design:</p>
+				</section>
+				<section>
+					<ul>
+						<li><strong>S - Single Responsibility Principle:</strong> One reason to change, enhancing
+							modularity.</li>
+						<li class="fragment"><strong>O - Open/Closed Principle:</strong> Open for extension, closed for
+							modification.</li>
+						<li class="fragment"><strong>L - Liskov Substitution Principle:</strong> Subtypes replaceable
+							without altering correctness.</li>
+						<li class="fragment"><strong>I - Interface Segregation Principle:</strong> No dependency on unused
+							methods.</li>
+						<li class="fragment"><strong>D - Dependency Inversion Principle:</strong> Depend on abstractions,
+						not concretions.</li>
+					</ul>
+				</section>
+				<section>
+                    <h2>These principles lay the foundation for a solid and robust software architecture.</h2>
+                </section>
+				<section>
+					<h3>Thank you for watching this video to the end!</h3>
+               		<p>Have a good coding experience!</p>
+                </section>
+			</section>
+		</div>
+	</div>
+	<script src="dist/reveal.js"></script>
+	<script src="plugin/notes/notes.js"></script>
+	<script src="plugin/markdown/markdown.js"></script>
+	<script src="plugin/highlight/highlight.js"></script>
+	<script>
+		Reveal.initialize({
+			hash: true,
+			plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
+		});
+	</script>
+</body>
+
+</html>
